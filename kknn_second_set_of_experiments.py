@@ -6,7 +6,7 @@ KKNN: an adaptive curvature based nearest neighbor classifier
 
 @author: Alexandre L. M. Levada
 
-Python script to reproduce the results obtained by the first set of experiments in the paper
+Python script to reproduce the results obtained by the second set of experiments in the paper
 
 """
 
