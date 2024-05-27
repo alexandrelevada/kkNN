@@ -229,8 +229,8 @@ def testa_KNN(treino, teste, target_treino, target_teste, nn):
 # Train the adaptive kk-NN classifier
 def treina_curvature_KNN(treino, target, nn):
     curvaturas = Curvature_Estimation(treino, nn)
-    K = curvaturas
-    intervalos = np.linspace(0.1, 0.9, 9)       # for curvature quantization quantization
+    K = normalize_curvatures(curvaturas)
+    intervalos = np.linspace(0.1, 0.9, 9)       # for curvature quantization
     quantis = np.quantile(K, intervalos)
     bins = np.array(quantis)
     # Discrete curvature values obtained after quantization (scores)
@@ -246,11 +246,11 @@ def testa_curvature_KNN(treino, teste, target_treino, target_teste, nn):
     # Computes the curvature of the training set
     curvaturas = Curvature_Estimation(treino, nn)
     intervalos = np.linspace(0.1, 0.9, 9)       # for curvature quantization
-    K = curvaturas
+    K = normalize_curvatures(curvaturas)
     quantis = np.quantile(K, intervalos)
     bins = np.array(quantis)
     # Discrete curvature values obtained after quantization (scores)
-    disc_curv = np.digitize(K, bins)
+    disc_curv = np.digitize(K, bins)    
     print()
     print('Size of test size: ', n)
     for i in range(n):
@@ -262,8 +262,9 @@ def testa_curvature_KNN(treino, teste, target_treino, target_teste, nn):
         # Test sample + k nearest neighbors
         data = np.vstack((teste[i, :], treino[neighs, :]))  # add sample at the beginning
         curvature = Point_Curvature_Estimation(data, nn)
-        # Add curvature in the vector of curvsatures
-        curvaturas_ = np.hstack((K, curvature))
+        # Add curvature in the vector of curvatures        
+        curvaturas_ = np.hstack((curvaturas, curvature))
+        curvaturas_ = normalize_curvatures(curvaturas_)
         quantis_ = np.quantile(curvaturas_, intervalos)
         bins_ = np.array(quantis_)
         disc_curv_ = np.digitize(curvaturas_, bins_)
