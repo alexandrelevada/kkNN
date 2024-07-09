@@ -168,7 +168,7 @@ def Point_Curvature_Estimation(dados, k):
 
 # Optional function to normalize the curvatures to the interval [0, 1]
 def normalize_curvatures(curv):
-    k = (curv - curv.min())/(curv.max() - curv.min())
+    k = (curv - curv.min())/(curv.max() - curv.min() + 0.001)
     return k
 
 # Generates the k-NNG (fixed k)
@@ -294,7 +294,7 @@ warnings.simplefilter(action='ignore')
 #X = skdata.fetch_openml(name='UMIST_Faces_Cropped', version=1)     
 #X = skdata.fetch_openml(name='variousCancers_final', version=1)     
 #X = skdata.fetch_openml(name='micro-mass', version=1)  
-X = skdata.fetch_openml(name='collins', version=4)                 
+X = skdata.fetch_openml(name='GCM', version=1)
 
 dados = X['data']
 target = X['target']
@@ -341,7 +341,8 @@ if m > 100:
     dados = model.fit_transform(dados, target)
 
 # Size of the training sets
-treino_sizes = [0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.20, 0.21, 0.22, 0.23, 0.24, 0.25]
+treino_sizes = np.arange(0.1, 0.95, 0.05)
+#treino_sizes = [0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.20, 0.21, 0.22, 0.23, 0.24, 0.25]
 
 matriz_knn = np.zeros((len(treino_sizes), 7))   # 7 performance evaluation metrics
 matriz_kknn = np.zeros((len(treino_sizes), 7))  # 7 performance evaluation metrics
