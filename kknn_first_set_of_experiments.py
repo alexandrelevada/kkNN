@@ -168,7 +168,7 @@ def Point_Curvature_Estimation(dados, k):
 
 # Optional function to normalize the curvatures to the interval [0, 1]
 def normalize_curvatures(curv):
-    k = (curv - curv.min())/(curv.max() - curv.min())
+    k = (curv - curv.min())/(curv.max() - curv.min() + 0.001)
     return k
 
 # Generates the k-NNG (fixed k)

@@ -291,10 +291,10 @@ warnings.simplefilter(action='ignore')
 ############################################################
 # Data loading (uncomment one dataset from the list below)
 ############################################################
-X = skdata.fetch_openml(name='UMIST_Faces_Cropped', version=1)     
+#X = skdata.fetch_openml(name='UMIST_Faces_Cropped', version=1)     
 #X = skdata.fetch_openml(name='variousCancers_final', version=1)     
 #X = skdata.fetch_openml(name='micro-mass', version=1)  
-#X = skdata.fetch_openml(name='collins', version=2)                 
+X = skdata.fetch_openml(name='collins', version=4)                 
 
 dados = X['data']
 target = X['target']
