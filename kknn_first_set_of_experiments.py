@@ -51,7 +51,7 @@ from sklearn.metrics import jaccard_score
 from sklearn.preprocessing import LabelEncoder
 from scipy.stats import wilcoxon
 
-# Gram-Schmidt ortogonalization
+# Gram-Schmidt ortogonalization (not necessary anymore for curvature estimation!)
 def gs(X, row_vecs=True, norm = True):
     if not row_vecs:
         X = X.T
@@ -113,7 +113,8 @@ def Curvature_Estimation(dados, k):
         Wpca = np.hstack((Wpca, Squared))
         Wpca = np.hstack((Wpca, Cross))
         # Gram-Schmidt ortogonalization
-        Q = gs(Wpca)
+        #Q = gs(Wpca)
+        Q = Wpca
         # Discard the first m columns of H
         H = Q[:, (m+1):]        
         II = np.dot(H, H.T)
@@ -158,7 +159,8 @@ def Point_Curvature_Estimation(dados, k):
     Wpca = np.hstack((Wpca, Squared))
     Wpca = np.hstack((Wpca, Cross))
     # Gram-Schmidt ortogonalization
-    Q = gs(Wpca)
+    #Q = gs(Wpca)
+    Q  = Wpca
     # Discard the first m columns of H        
     H = Q[:, (m+1):]
     II = np.dot(H, H.T)
@@ -199,12 +201,6 @@ def Curvature_Based_Graph(dados, k, curv):
 # Regular k-NN classifier
 ####################################
 
-# Train regular k-NN classifier
-def treina_KNN(treino, target, nn):
-    # Just build the k-NNG
-    A = Simple_Graph(dados, nn)
-    return A    
-
 # Test regular k-NN classifier
 def testa_KNN(treino, teste, target_treino, target_teste, nn):
     n = teste.shape[0]
@@ -225,18 +221,6 @@ def testa_KNN(treino, teste, target_treino, target_teste, nn):
 ##############################################
 # Adaptive curvature based kk-NN classifier
 ##############################################
-
-# Train the adaptive kk-NN classifier
-def treina_curvature_KNN(treino, target, nn):
-    curvaturas = Curvature_Estimation(treino, nn)
-    K = normalize_curvatures(curvaturas)
-    intervalos = np.linspace(0.1, 0.9, 9)       # for curvature quantization
-    quantis = np.quantile(K, intervalos)
-    bins = np.array(quantis)
-    # Discrete curvature values obtained after quantization (scores)
-    disc_curv = np.digitize(K, bins)
-    A = Curvature_Based_Graph(treino, nn, disc_curv)
-    return K
 
 # Test the adaptive kk-NN classifier
 def testa_curvature_KNN(treino, teste, target_treino, target_teste, nn):
@@ -292,9 +276,9 @@ warnings.simplefilter(action='ignore')
 # Data loading (uncomment one dataset from the list below)
 ############################################################
 
-X = skdata.fetch_openml(name='vowel', version=1)   
+#X = skdata.fetch_openml(name='vowel', version=1)   
 #X = skdata.fetch_openml(name='zoo', version=1)    
-#X = skdata.fetch_openml(name='thyroid-new', version=1)
+X = skdata.fetch_openml(name='thyroid-new', version=1)
 #X = skdata.fetch_openml(name='analcatdata_lawsuit', version=1)  
 #X = skdata.fetch_openml(name='arsenic-male-bladder', version=2) 
 #X = skdata.fetch_openml(name='tecator', version=2)              
